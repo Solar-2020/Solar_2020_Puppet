@@ -1,4 +1,6 @@
-class nginx{
+class nginx {
+  nginx::conf { 'nginx': }
+
   package{ 'nginx':
     ensure => latest,
   }
@@ -8,9 +10,8 @@ class nginx{
     enable => true,
     require => Package['nginx'],
     subscribe => [
-      Define['nginx.conf'],
+      Nginx::Conf['nginx'],
     ]
-  }
 
-  nginx::conf{'nginx':}
+  }
 }

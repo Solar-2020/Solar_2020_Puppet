@@ -5,8 +5,8 @@ name: CI
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-#   push:
-#     branches: [ master ]
+  push:
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -20,26 +20,26 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    # - uses: actions/checkout@v2
-    #   with:
-    #     fetch-depth: 1
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
 
-    # - name: Deploy to Staging server
-    #   uses: easingthemes/ssh-deploy@v2.0.7
-    #   env:
-    #     SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-    #     ARGS: "-rltgoDzvO"
-    #     SOURCE: "puppet/"
-    #     REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-    #     REMOTE_USER: ${{ secrets.REMOTE_USER }}
-    #     TARGET: ${{ secrets.REMOTE_TARGET }}
+    - name: Deploy to Staging server
+      uses: easingthemes/ssh-deploy@v2.0.7
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+        ARGS: "-rltgoDzvO --delete"
+        SOURCE: ""
+        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+        REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        TARGET: "puppet/"
     
     - name: Kick puppet
       uses: garygrossgarten/github-action-ssh@release
       with:
-        command: sudo cd puppet/ && sudo git pull origin master && sudo puppet apply manifests/site.pp
+        command: sudo /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp
         # command: exit 1
-        host: ${{ secrets.REMOTE_HOS }}
+        host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
         privateKey: ${{ secrets.SERVER_SSH_KEY }}
     
