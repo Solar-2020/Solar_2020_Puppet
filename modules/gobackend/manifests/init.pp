@@ -2,5 +2,5 @@ class gobackend {
   class { 'docker':
     version => 'latest',
   }
-  docker::image { 'base': }
+  docker::image { 'hello-world': }
 }
