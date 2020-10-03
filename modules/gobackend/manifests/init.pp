@@ -7,12 +7,13 @@ class gobackend(
   }
   docker::run { 'tamerlanchik/solardev':
     image            => 'tamerlanchik/solardev',
-    detach           => true,
-    ports            => ['8099:8099'],
+    # detach           => true,
+    ports            => ['9000:8099'],
     env              => ['FOO=BAR', 'FOO2=BAR2'],
     restart_service  => true,
-    privileged       => false,
+    privileged       => true,
     pull_on_start    => true,
+    remove_container_on_start => false,
     require => Docker::Image['tamerlanchik/solardev'],
   }
 }
