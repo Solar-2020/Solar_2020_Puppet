@@ -6,6 +6,7 @@ class nginx {
   nginx::conf { 'static':
     pref => "/conf.d"
   }
+  nginx::conf { 'cors': }
 
   package{ 'nginx':
     ensure => latest,
@@ -19,6 +20,7 @@ class nginx {
       Nginx::Conf['nginx'],
       Nginx::Conf['gobackend_dev'],
       Nginx::Conf['static'],
+      Nginx::Conf['cors'],
     ]
 
   }
