@@ -1,5 +1,8 @@
 class nginx {
   nginx::conf { 'nginx': }
+  nginx::conf { 'gobackend_dev':
+    pref => "/conf.d"
+   }
 
   package{ 'nginx':
     ensure => latest,
@@ -11,6 +14,7 @@ class nginx {
     require => Package['nginx'],
     subscribe => [
       Nginx::Conf['nginx'],
+      Nginx::Conf['gobackend_dev'],
     ]
 
   }
