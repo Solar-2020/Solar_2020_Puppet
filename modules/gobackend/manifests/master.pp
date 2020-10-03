@@ -1,7 +1,7 @@
-class gobackend::dev(
+class gobackend::master(
   String $port = '9000',
 ) {
-  $branch = 'dev'
+  $branch = 'master'
 
   docker::image { "tamerlanchik/solar${branch}":
     ensure    => 'latest',
