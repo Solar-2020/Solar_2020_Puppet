@@ -5,6 +5,9 @@ class gobackend(
   docker::image { 'tamerlanchik/solardev':
     ensure    => 'latest',
   }
+  docker_volume { 'mylog':
+  ensure => present,
+}
   docker::run { 'tamerlanchik/solardev':
     image            => 'tamerlanchik/solardev:latest',
     # detach           => true,
@@ -17,5 +20,6 @@ class gobackend(
     pull_on_start    => true,
     remove_container_on_start => false,
     require => Docker::Image['tamerlanchik/solardev'],
+    volumes => ['mylog:/var/log']
   }
 }
