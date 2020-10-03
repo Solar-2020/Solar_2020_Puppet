@@ -6,7 +6,7 @@ class gobackend(
     ensure    => 'latest',
   }
   docker::run { 'tamerlanchik/solardev':
-    image            => 'tamerlanchik/solardev',
+    image            => 'tamerlanchik/solardev:latest',
     # detach           => true,
     ports            => ['9000:8099'],
     env              => ['FOO=BAR', 'FOO2=BAR2'],
