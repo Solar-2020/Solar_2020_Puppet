@@ -1,5 +1,5 @@
 class profile::myfirewall::rules {
-  include ::firewall
+  include ::firewall  # automatically loads 'iptables-services' https://github.com/voxpupuli/puppet-jenkins/issues/424
   # package { 'iptables-services':
   #   ensure  => installed,
   # }
