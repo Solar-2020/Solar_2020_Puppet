@@ -21,4 +21,9 @@ class profile::myfirewall::rules {
     proto  => 'tcp',
     action => 'accept',
   }
+  firewall { '103 godocker2':
+    dport  => [9000],
+    proto  => 'tcp',
+    action => 'accept',
+  }
 }
