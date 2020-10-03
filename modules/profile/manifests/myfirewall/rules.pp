@@ -1,10 +1,11 @@
 class profile::myfirewall::rules {
-  package { 'iptables-services':
-    ensure  => installed,
-  }
-  Firewall {
-  require => Package['iptables-services']
-  }
+  include ::firewall
+  # package { 'iptables-services':
+  #   ensure  => installed,
+  # }
+  # Firewall {
+  # require => Package['iptables-services']
+  # }
   firewall { '100 allow http and https access':
     dport  => [80, 443],
     proto  => 'tcp',
