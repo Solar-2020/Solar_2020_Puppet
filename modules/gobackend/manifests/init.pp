@@ -20,6 +20,7 @@ class gobackend(
     pull_on_start    => true,
     remove_container_on_start => false,
     require => Docker::Image['tamerlanchik/solardev'],
+    name => "tamerlanchik-solardev",
     # volumes => ['mylog:/var/log']
   }
 }
