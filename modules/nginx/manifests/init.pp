@@ -1,8 +1,5 @@
 class nginx {
   nginx::conf { 'nginx': }
-  nginx::conf { 'gobackend_dev':
-    pref => '/conf.d'
-  }
   nginx::conf { 'branch':
     pref => '/conf.d'
   }
@@ -18,7 +15,6 @@ class nginx {
     require   => Package['nginx'],
     subscribe => [
       Nginx::Conf['nginx'],
-      Nginx::Conf['gobackend_dev'],
       Nginx::Conf['branch'],
       Nginx::Conf['cors'],
     ]
