@@ -3,12 +3,10 @@ class gobackend(
   String $tag = $branch,
 ) {
   docker::image { 'tamerlanchik/solardev':
-    ensure    => 'latest'
   }
   docker::run { 'tamerlanchik/solardev':
     image            => 'tamerlanchik/solardev',
     detach           => true,
-    service_prefix   => 'docker-',
     ports            => ['8099'],
     expose           => ['8099'],
     env              => ['FOO=BAR', 'FOO2=BAR2'],
