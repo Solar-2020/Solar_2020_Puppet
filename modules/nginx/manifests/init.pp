@@ -1,10 +1,10 @@
 class nginx {
   nginx::conf { 'nginx': }
   nginx::conf { 'gobackend_dev':
-    pref => "/conf.d"
+    pref => '/conf.d'
   }
-  nginx::conf { 'static':
-    pref => "/conf.d"
+  nginx::conf { 'branch':
+    pref => '/conf.d'
   }
   nginx::conf { 'cors': }
 
@@ -13,31 +13,31 @@ class nginx {
   }
 
   service { 'nginx':
-    ensure => running,
-    enable => true,
-    require => Package['nginx'],
+    ensure    => running,
+    enable    => true,
+    require   => Package['nginx'],
     subscribe => [
       Nginx::Conf['nginx'],
       Nginx::Conf['gobackend_dev'],
-      Nginx::Conf['static'],
+      Nginx::Conf['branch'],
       Nginx::Conf['cors'],
     ]
 
   }
 
   file {'/usr/share/nginx/html':
-    path => '/usr/share/nginx/html',
     ensure => directory,
-    mode => '0770',
-    owner => 'nginx',
-    group => 'www'
+    path   => '/usr/share/nginx/html',
+    mode   => '0770',
+    owner  => 'nginx',
+    group  => 'www'
   }
   file {'/home/deploy/html':
-    path => '/home/deploy/html',
-    ensure => link,
-    mode => '0770',
-    owner => 'deploy',
-    group => 'www',
+    ensure  => link,
+    path    => '/home/deploy/html',
+    mode    => '0770',
+    owner   => 'deploy',
+    group   => 'www',
     require => File['/usr/share/nginx/html'],
   }
 }
