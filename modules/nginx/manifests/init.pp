@@ -18,4 +18,20 @@ class nginx {
     ]
 
   }
+
+  file {'/usr/share/nginx/html':
+    path => '/usr/share/nginx/html',
+    ensure => directory,
+    mode => '0770',
+    owner => 'nginx',
+    group => 'www'
+  }
+  file {'/home/deploy/html':
+    path => '/home/deploy/html',
+    ensure => link,
+    mode => '0770',
+    owner => 'deploy',
+    group => 'www',
+    require => File['/usr/share/nginx/html'],
+  }
 }
