@@ -1,17 +1,17 @@
-class gobackend::predev(
+class gobackend(
   String $branch = $name,
   String $tag = $branch,
 ) {
-  docker::image { "tamerlanchik/solarpredev":
+  docker::image { 'tamerlanchik/solardev':
     ensure    => 'latest',
   }
 #   docker_volume { 'mylog':
 #   ensure => present,
 # }
-  docker::run { "tamerlanchik/solarpredev":
-    image            => "tamerlanchik/solarpredev:latest",
+  docker::run { 'tamerlanchik/solardev':
+    image            => 'tamerlanchik/solardev:latest',
     # detach           => true,
-    ports            => ['9100:8099'],
+    ports            => ['9000:8099'],
     env              => [
       'POSTS_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/posts?search_path=posts&sslmode=disable', 
       'UPLOAD_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/upload?search_path=upload&sslmode=disable'
@@ -20,8 +20,8 @@ class gobackend::predev(
     privileged       => true,
     pull_on_start    => true,
     remove_container_on_start => false,
-    require => Docker::Image["tamerlanchik/solarpredev"],
-    name => "tamerlanchik-solarpredev",
+    require => Docker::Image['tamerlanchik/solardev'],
+    name => "tamerlanchik-solardev",
     # volumes => ['mylog:/var/log']
   }
 }
