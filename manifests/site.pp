@@ -1,5 +1,5 @@
 node default {
   include nginx
-  include gobackend
+  include profile::gopod::base
   include profile::myfirewall::rules
 }

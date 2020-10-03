@@ -21,6 +21,7 @@ class nginx {
 
   }
 
+  # from here nginx serves
   file {'/usr/share/nginx/html':
     ensure => directory,
     path   => '/usr/share/nginx/html',
@@ -28,12 +29,15 @@ class nginx {
     owner  => 'nginx',
     group  => 'www'
   }
-  file {'/home/deploy/html':
-    ensure  => link,
-    path    => '/home/deploy/html',
-    mode    => '0770',
-    owner   => 'deploy',
-    group   => 'www',
-    require => File['/usr/share/nginx/html'],
+
+  # here github loads files
+  -> file {'/home/deploy/html':
+    ensure => link,
+    path   => '/home/deploy/html',
+    mode   => '0770',
+    owner  => 'deploy',
+    group  => 'www',
   }
+  # a -> b means a before b
+  # a ~> b means a before b; b subscribe a
 }
