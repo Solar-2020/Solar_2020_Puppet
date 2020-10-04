@@ -42,6 +42,7 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: sudo /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp; [[ "02" == *"${PIPESTATUS[0]}"* ]]
 
+    # Does not require runtime Docker build! Cannot check command exit code
     # - name: Kick puppet
     #   uses: garygrossgarten/github-action-ssh@release
     #   with:
