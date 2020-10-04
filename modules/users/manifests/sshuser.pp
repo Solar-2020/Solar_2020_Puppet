@@ -1,4 +1,4 @@
-class profile::users::sshuser(
+define users::sshuser(
   Array[String] $authorized_keys = [],
   $ensure = present,
   Boolean $managehome = true,
