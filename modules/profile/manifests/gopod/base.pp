@@ -21,6 +21,7 @@ class profile::gopod::base {
   cron { 'docker_clear':
     command => '/bin/docker container prune -f && /bin/docker image prune -f',
     user    => 'deploy',
-    minute  => 30,
+    hour    =>absent,
+    minute  => '*/30',
   }
 }
