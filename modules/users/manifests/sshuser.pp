@@ -2,7 +2,7 @@ define users::sshuser(
   Array[String] $authorized_keys = [],
   $ensure = present,
   Boolean $managehome = true,
-  Array[String] $groups = [],
+  String $groups = '',
 ){
   user { $name:
     ensure     => $ensure,
