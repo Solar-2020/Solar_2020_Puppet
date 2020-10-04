@@ -34,14 +34,22 @@ jobs:
         REMOTE_USER: ${{ secrets.REMOTE_USER }}
         TARGET: "puppet/"
     
-    - name: Kick puppet
-      uses: garygrossgarten/github-action-ssh@release
+    - name: Kick Puppet
+      uses: appleboy/ssh-action@master
       with:
-        command: sudo /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp; [[ "02" == *"${PIPESTATUS[0]}"* ]]
-        # command: exit 1
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
-        privateKey: ${{ secrets.SERVER_SSH_KEY }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: sudo /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp; [[ "02" == *"${PIPESTATUS[0]}"* ]]
+
+    # - name: Kick puppet
+    #   uses: garygrossgarten/github-action-ssh@release
+    #   with:
+    #     command: sudo /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp; [[ "02" == *"${PIPESTATUS[0]}"* ]]
+    #     # command: exit 1
+    #     host: ${{ secrets.REMOTE_HOST }}
+    #     username: ${{ secrets.REMOTE_USER }}
+    #     privateKey: ${{ secrets.SERVER_SSH_KEY }}
     
   #   - name: send custom message
   #     uses: appleboy/telegram-action@master
