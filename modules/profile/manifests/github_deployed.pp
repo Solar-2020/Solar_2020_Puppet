@@ -1,3 +1,0 @@
-class github_deployed {
-
-}

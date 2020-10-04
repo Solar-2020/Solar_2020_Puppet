@@ -1,5 +1,6 @@
 class users {
   class { 'sudo': }
+
   group { 'www':
     ensure  => present,
     members => ['deploy', 'nginx'],
