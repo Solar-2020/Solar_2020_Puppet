@@ -1,0 +1,3 @@
+class github_deployed {
+
+}
