@@ -15,7 +15,7 @@ class profile::gopod::base {
 
   class { 'gobackend::predev':
     require => Class['docker'],
-    port    => '9101',
+    port    => '9101',fs
   }
 
   cron { 'docker_clear':
