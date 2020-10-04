@@ -3,8 +3,9 @@ class gobackend::predev(
 ) {
   $branch = 'predev'
 
-  docker::image { "tamerlanchik/solar${branch}:latest":
+  docker::image { "tamerlanchik/solar${branch}":
     ensure    => 'latest',
+    image_tag => 'latest',
   }
 #   docker_volume { 'mylog':
 #   ensure => present,
@@ -21,7 +22,7 @@ class gobackend::predev(
     privileged                => true,
     pull_on_start             => true,
     remove_container_on_start => false,
-    require                   => Docker::Image["tamerlanchik/solar${branch}:latest"],
+    subscribe                 => Docker::Image["tamerlanchik/solar${branch}"],
     name                      => "tamerlanchik-solar${branch}",
     # volumes => ['mylog:/var/log']
   }
