@@ -20,7 +20,7 @@ class gobackend::predev(
     ],
     restart_service           => true,
     privileged                => true,
-    pull_on_start             => true,
+    # pull_on_start             => true,
     remove_container_on_start => false,
     subscribe                 => Docker::Image["tamerlanchik/solar${branch}"],
     name                      => "tamerlanchik-solar${branch}",

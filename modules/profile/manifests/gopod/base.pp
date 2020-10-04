@@ -17,4 +17,10 @@ class profile::gopod::base {
     require => Class['docker'],
     port    => '9101',
   }
+
+  cron { 'docker_clear':
+    command => '/bin/docker container prune -f && /bin/docker image prune -f',
+    user    => 'deploy',
+    minute  => 30,
+  }
 }
