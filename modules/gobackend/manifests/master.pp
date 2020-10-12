@@ -5,6 +5,7 @@ class gobackend::master(
 
   docker::image { "tamerlanchik/solar${branch}":
     ensure    => 'latest',
+    image_tag => 'latest',
   }
 #   docker_volume { 'mylog':
 #   ensure => present,
