@@ -38,6 +38,24 @@ class nginx {
     owner  => 'deploy',
     group  => 'www',
   }
+  -> file { '/usr/share/nginx/static':
+    ensure => directory,
+    mode   => '0770',
+    owner  => 'nginx',
+    group  => 'www'
+  }
+  -> file { '/usr/share/nginx/static/photos':
+    ensure => directory,
+    mode   => '0770',
+    owner  => 'nginx',
+    group  => 'www'
+  }
+  -> file { '/usr/share/nginx/static/files':
+    ensure => directory,
+    mode   => '0770',
+    owner  => 'nginx',
+    group  => 'www'
+  }
   # a -> b means a before b
   # a ~> b means a before b; b subscribe a
 }

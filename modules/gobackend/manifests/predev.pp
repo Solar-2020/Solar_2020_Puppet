@@ -16,7 +16,9 @@ class gobackend::predev(
     ports                     => ["${port}:8099"],
     env                       => [
       'POSTS_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/posts?search_path=posts&sslmode=disable',
-      'UPLOAD_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/upload?search_path=upload&sslmode=disable'
+      'UPLOAD_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/upload?search_path=upload&sslmode=disable',
+      'FILE_PATH=/static/files',
+      'PHOTO_PATH=/static/photos'
     ],
     restart_service           => true,
     # privileged                => true,
@@ -24,6 +26,6 @@ class gobackend::predev(
     remove_container_on_start => false,
     subscribe                 => Docker::Image["tamerlanchik/solar${branch}"],
     name                      => "tamerlanchik-solar${branch}",
-    # volumes => ['mylog:/var/log']
+    volumes                   => ['/usr/share/nginx/static:/static']
   }
 }
