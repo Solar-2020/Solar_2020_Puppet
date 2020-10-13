@@ -38,19 +38,19 @@ class nginx {
     owner  => 'deploy',
     group  => 'www',
   }
-  -> file { '/usr/share/nginx/static':
+  -> file { '/usr/share/nginx/storage':
     ensure => directory,
     mode   => '0770',
     owner  => 'nginx',
     group  => 'www'
   }
-  -> file { '/usr/share/nginx/static/photos':
+  -> file { '/usr/share/nginx/storage/photos':
     ensure => directory,
     mode   => '0770',
     owner  => 'nginx',
     group  => 'www'
   }
-  -> file { '/usr/share/nginx/static/files':
+  -> file { '/usr/share/nginx/storage/files':
     ensure => directory,
     mode   => '0770',
     owner  => 'nginx',

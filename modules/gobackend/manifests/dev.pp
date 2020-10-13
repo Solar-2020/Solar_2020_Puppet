@@ -17,8 +17,8 @@ class gobackend::dev(
     env                       => [
       'POSTS_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/posts?search_path=posts&sslmode=disable',
       'UPLOAD_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/upload?search_path=upload&sslmode=disable',
-      'FILE_PATH=/static/files',
-      'PHOTO_PATH=/static/photos',
+      'FILE_PATH=/storage/files',
+      'PHOTO_PATH=/storage/photos'
     ],
     restart_service           => true,
     # privileged                => true,
@@ -26,6 +26,6 @@ class gobackend::dev(
     remove_container_on_start => false,
     subscribe                 => Docker::Image["tamerlanchik/solar${branch}"],
     name                      => "tamerlanchik-solar${branch}",
-    volumes                   => ['/usr/share/nginx/static:/static']
+    volumes                   => ['/usr/share/nginx/storage:/storage']
   }
 }
