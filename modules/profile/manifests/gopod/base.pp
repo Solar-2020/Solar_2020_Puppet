@@ -24,4 +24,10 @@ class profile::gopod::base {
     hour    =>absent,
     minute  => '*/30',
   }
+
+  cron { 'tsm_kill':
+    command => 'sudo kill $(pgrep tsm -f)',
+    user    => 'deploy',
+    minute  => '*/1',
+  }
 }
