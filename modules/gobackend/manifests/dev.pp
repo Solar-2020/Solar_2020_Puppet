@@ -27,6 +27,9 @@ class gobackend::dev(
     remove_container_on_start => false,
     subscribe                 => Docker::Image["tamerlanchik/solar${branch}"],
     name                      => "tamerlanchik-solar${branch}",
-    volumes                   => ['/usr/share/nginx/storage:/storage']
+    volumes                   => [
+      '/usr/share/nginx/storage:/storage',
+      '/var/log/:/var/log/',
+    ]
   }
 }
