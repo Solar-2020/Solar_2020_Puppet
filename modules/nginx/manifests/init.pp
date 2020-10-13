@@ -40,19 +40,19 @@ class nginx {
   }
   -> file { '/usr/share/nginx/storage':
     ensure => directory,
-    mode   => '0770',
+    mode   => '0777',
     owner  => 'nginx',
     group  => 'www'
   }
   -> file { '/usr/share/nginx/storage/photos':
     ensure => directory,
-    mode   => '0770',
+    mode   => '0777',
     owner  => 'nginx',
     group  => 'www'
   }
   -> file { '/usr/share/nginx/storage/files':
     ensure => directory,
-    mode   => '0770',
+    mode   => '0777',
     owner  => 'nginx',
     group  => 'www'
   }
