@@ -7,6 +7,7 @@ define gobackend::service(
   String $project = 'solar',
   Array[String] $volumes = []
 ) {
+  tag "gobackend::${service}::${branch}"
   $fullname = "${docker_login}/${project}_${service}_${branch}";
 
   docker::image { $fullname:
