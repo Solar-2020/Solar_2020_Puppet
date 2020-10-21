@@ -11,21 +11,21 @@ class profile::gopod::base {
   ]
 
   # gobackend::service { 'posts_master':
-  #   port    => '9000',
+  #   port    => '9100',
   #   service => 'posts',
   #   branch  => 'master',
   #   env     => $posts_envs
   # }
 
   gobackend::service { 'posts_dev':
-    port    => '9400',
+    port    => '9101',
     service => 'posts',
     branch  => 'dev',
     env     => $posts_envs
   }
 
   # gobackend::service { 'posts_predev':
-  #   port    => '9101',
+  #   port    => '9102',
   #   service => 'posts',
   #   branch  => 'predev',
   #   env     => $posts_envs
@@ -61,13 +61,4 @@ class profile::gopod::base {
     user    => 'deploy',
     minute  => '*/1',
   }
-
-  docker::run { 'tamerlanchik/solarpredev':
-    ensure => absent,
-    image  => 'tamerlanchik/solarpredev:latest'
-  }
-  docker::image { 'tamerlanchik/solarpredev':
-    ensure => absent,
-  }
-
 }
