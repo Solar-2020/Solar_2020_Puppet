@@ -4,13 +4,20 @@ class nginx {
     pref => '/conf.d'
   }
   nginx::conf { 'cors': }
-  nginx::conf { 'api':
+
+  file {'/etc/nginx/conf.d/services':
+      ensure => directory,
+      mode   => '0770',
+      owner  => 'nginx',
+      group  => 'www'
+  }
+  -> nginx::conf { 'api':
     pref => '/conf.d/services'
   }
-  nginx::conf { 'group':
+  -> nginx::conf { 'group':
     pref => '/conf.d/services'
   }
-  nginx::conf { 'interview':
+  -> nginx::conf { 'interview':
     pref => '/conf.d/services'
   }
 
