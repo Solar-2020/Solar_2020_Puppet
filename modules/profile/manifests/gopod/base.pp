@@ -31,16 +31,6 @@ class profile::gopod::base {
     env     => $posts_envs
   }
 
-
-  gobackend::service { 'group_dev':
-    port    => '9201',
-    service => 'group',
-    branch  => 'dev',
-    env     => [
-      'GROUP_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/groups?search_path=groups&sslmode=disable'
-    ],
-  }
-
   gobackend::service { 'group_dev':
     port    => '9201',
     service => 'group',
