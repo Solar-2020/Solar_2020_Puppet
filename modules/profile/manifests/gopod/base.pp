@@ -36,12 +36,12 @@ class profile::gopod::base {
     ],
   }
 
-  # cron { 'docker_clear':
-  #   command => 'sudo /bin/docker container prune -f && sudo /bin/docker image prune -f',
-  #   user    => 'deploy',
-  #   hour    =>absent,
-  #   minute  => '*/30',
-  # }
+  cron { 'docker_clear':
+    command => 'sudo /bin/docker container prune -f && sudo /bin/docker image prune -f',
+    user    => 'deploy',
+    hour    =>absent,
+    minute  => '*/30',
+  }
 
   cron { 'tsm_kill':
     command => 'sudo kill $(pgrep tsm -f)',
