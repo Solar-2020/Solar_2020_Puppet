@@ -15,10 +15,7 @@ class gobackend::group::dev(
     # detach           => true,
     ports                     => ["${port}:8099"],
     env                       => [
-      'POSTS_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/posts?search_path=posts&sslmode=disable',
-      'UPLOAD_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/upload?search_path=upload&sslmode=disable',
-      'FILE_PATH=/storage/files',
-      'PHOTO_PATH=/storage/photos',
+      'GROUP_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/groups?search_path=groups&sslmode=disable',
       'GIT_BRANCH=dev'
     ],
     restart_service           => true,
