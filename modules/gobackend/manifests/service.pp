@@ -12,6 +12,7 @@ define gobackend::service(
   docker::image { $fullname:
     ensure    => 'latest',
     image_tag => 'latest',
+    require   => Service['docker']
   }
 
   docker::run { 'fullname':

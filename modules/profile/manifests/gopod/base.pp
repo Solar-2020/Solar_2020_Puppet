@@ -3,34 +3,58 @@ class profile::gopod::base {
     version => 'latest',
   }
 
-  class { 'gobackend::master':
-    require => Class['docker'],
+  $posts_envs =  [
+      'POSTS_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/posts?search_path=posts&sslmode=disable',
+      'UPLOAD_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/upload?search_path=upload&sslmode=disable',
+      'FILE_PATH=/storage/files',
+      'PHOTO_PATH=/storage/photos',
+  ]
+
+  gobackend::service { 'posts_master':
     port    => '9000',
+    service => 'posts',
+    branch  => 'master',
+    env     => $posts_envs
   }
 
-  class { 'gobackend::dev':
-    require => Class['docker'],
+  gobackend::service { 'posts_dev':
     port    => '9100',
+    service => 'posts',
+    branch  => 'dev',
+    env     => $posts_envs
   }
 
-  class { 'gobackend::predev':
-    require => Class['docker'],
+  gobackend::service { 'posts_predev':
     port    => '9101',
+    service => 'posts',
+    branch  => 'predev',
+    env     => $posts_envs
   }
 
-  class { 'gobackend::group::dev':
-    require => Class['docker'],
+
+  gobackend::service { 'group_dev':
     port    => '9201',
+    service => 'group',
+    branch  => 'dev',
+    env     => [
+      'GROUP_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/groups?search_path=groups&sslmode=disable'
+    ],
   }
 
-  # class { 'gobackend::interview::dev':
-  #   require => Class['docker'],
-  #   port    => '9301',
-  # }
-  gobackend::service { 'interview':
-    port   => '9301',
-    branch => 'dev',
-    env    => [
+  gobackend::service { 'group_dev':
+    port    => '9201',
+    service => 'group',
+    branch  => 'dev',
+    env     => [
+      'GROUP_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/groups?search_path=groups&sslmode=disable'
+    ],
+  }
+
+  gobackend::service { 'interview_dev':
+    port    => '9301',
+    service => 'interview',
+    branch  => 'dev',
+    env     => [
       'INTERVIEW_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/posts?search_path=posts&sslmode=disable'
     ],
   }

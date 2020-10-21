@@ -1,5 +1,3 @@
 class gobackend {
-  include gobackend::master
-  include gobackend::dev
-  include gobackend::predev
+  include gobackend::service
 }
