@@ -4,21 +4,24 @@ class nginx {
     pref => '/conf.d'
   }
   nginx::conf { 'cors': }
+  nginx::conf { 'api':
+    pref => '/conf.d/services'
+  }
+  nginx::conf { 'group':
+    pref => '/conf.d/services'
+  }
+  nginx::conf { 'interview':
+    pref => '/conf.d/services'
+  }
 
   package{ 'nginx':
     ensure => latest,
   }
 
   service { 'nginx':
-    ensure    => running,
-    enable    => true,
-    require   => Package['nginx'],
-    subscribe => [
-      Nginx::Conf['nginx'],
-      Nginx::Conf['branch'],
-      Nginx::Conf['cors'],
-    ]
-
+    ensure  => running,
+    enable  => true,
+    require => Package['nginx']
   }
 
   # from here nginx serves

@@ -1,5 +1,5 @@
-class gobackend::service(
-  String $service,
+define gobackend::service(
+  String $service = $name,
   String $port = '9000',
   String $branch = 'main',
   Array[String] $env = [],
