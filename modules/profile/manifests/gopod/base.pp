@@ -62,12 +62,12 @@ class profile::gopod::base {
     minute  => '*/1',
   }
 
-  # docker::run { 'tamerlanchik/solarpredev':
-  #   ensure => absent,
-  #   image  => 'tamerlanchik/solarpredev:latest',
-  # }
-  # docker::image { 'tamerlanchik/solarpredev':
-  #   ensure => absent,
-  # }
+  docker::run { 'tamerlanchik/solarpredev':
+    ensure => absent,
+    image  => 'tamerlanchik/solarpredev:latest'
+  }
+  docker::image { 'tamerlanchik/solarpredev':
+    ensure => absent,
+  }
 
 }
