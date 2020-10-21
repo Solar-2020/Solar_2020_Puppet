@@ -18,6 +18,11 @@ class profile::gopod::base {
     port    => '9101',
   }
 
+  class { 'gobackend::group::dev':
+    require => Class['docker'],
+    port    => '9201',
+  }
+
   cron { 'docker_clear':
     command => 'sudo /bin/docker container prune -f && sudo /bin/docker image prune -f',
     user    => 'deploy',

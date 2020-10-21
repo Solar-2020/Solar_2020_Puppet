@@ -1,17 +1,17 @@
-class gobackend::dev(
+class gobackend::group::dev(
   String $port = '9000',
 ) {
   $branch = 'dev'
 
-  docker::image { "tamerlanchik/solar${branch}":
+  docker::image { "tamerlanchik/solar_group_${branch}":
     ensure    => 'latest',
     image_tag => 'latest',
   }
 #   docker_volume { 'mylog':
 #   ensure => present,
 # }
-  docker::run { "tamerlanchik/solar${branch}":
-    image                     => "tamerlanchik/solar${branch}:latest",
+  docker::run { "tamerlanchik/solar_group_${branch}":
+    image                     => "tamerlanchik/solar_group_${branch}:latest",
     # detach           => true,
     ports                     => ["${port}:8099"],
     env                       => [
@@ -25,8 +25,8 @@ class gobackend::dev(
     # privileged                => true,
     # pull_on_start             => true,
     remove_container_on_start => false,
-    subscribe                 => Docker::Image["tamerlanchik/solar${branch}"],
-    name                      => "tamerlanchik-solar${branch}",
+    subscribe                 => Docker::Image["tamerlanchik/solar_group_${branch}"],
+    name                      => "tamerlanchik-solar_group_${branch}",
     volumes                   => [
       '/usr/share/nginx/storage:/storage',
       '/var/log/:/var/log/',

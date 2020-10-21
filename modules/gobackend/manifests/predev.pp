@@ -30,6 +30,6 @@ class gobackend::predev(
     volumes                   => [
       '/usr/share/nginx/storage:/storage',
       '/var/log/:/var/log/',
-      ]
+    ]
   }
 }
