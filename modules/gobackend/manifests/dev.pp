@@ -31,5 +31,5 @@ class gobackend::dev(
       '/usr/share/nginx/storage:/storage',
       '/var/log/:/var/log/',
     ]
-  }ппппппррррорррриииии  иммммммммммммммммммммммммммм
+  }
 }
