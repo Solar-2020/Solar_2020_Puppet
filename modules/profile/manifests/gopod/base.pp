@@ -23,9 +23,17 @@ class profile::gopod::base {
     port    => '9201',
   }
 
-  class { 'gobackend::interview::dev':
-    require => Class['docker'],
+  # class { 'gobackend::interview::dev':
+  #   require => Class['docker'],
+  #   port    => '9301',
+  # }
+  class { 'gobackend::service':
+    service => 'interview',
     port    => '9301',
+    branch  => 'dev',
+    env     => [
+      'INTERVIEW_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/posts?search_path=posts&sslmode=disable'
+    ],
   }
 
   # cron { 'docker_clear':
