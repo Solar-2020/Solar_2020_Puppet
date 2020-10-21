@@ -16,7 +16,7 @@ define gobackend::service(
     require   => Service['docker']
   }
 
-  docker::run { 'fullname':
+  docker::run { $fullname:
     image                     => "${fullname}:latest",
     ports                     => ["${port}:8099"],
     env                       => $env + [
