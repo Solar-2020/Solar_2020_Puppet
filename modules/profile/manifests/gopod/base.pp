@@ -15,9 +15,7 @@ class profile::gopod::base {
     port    => '9100',
     service => 'posts',
     branch  => 'master',
-    env     => concat($posts_envs, [
-      "INTERVIEW_SERVICE=${hostname}:9300"
-    ])
+    env     => $posts_envs
   }
   gobackend::service { 'posts_dev':
     port    => '9101',
