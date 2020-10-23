@@ -52,10 +52,10 @@ jobs:
       uses: appleboy/telegram-action@master
 #       if: env.WORKFLOW_CONCLUSION == 'failure'
       with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
+        to: ${{ secrets.TG_NOTIFY_TO }}
+        token: ${{ secrets.TGBOT_TOKEN }}
         message: |
-          Puppet ${{ github.event_name }} event $WORKFLOW_CONCLUSION.
+          Puppet $WORKFLOW_CONCLUSION ${{ github.event_name }} event.
     # Does not require runtime Docker build! Cannot check command exit code
     # - name: Kick puppet
     #   uses: garygrossgarten/github-action-ssh@release
