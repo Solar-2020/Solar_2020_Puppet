@@ -26,6 +26,7 @@ define gobackend::service(
     restart_service           => true,
     remove_container_on_start => false,
     subscribe                 => Docker::Image[$fullname],
+    require                   => Docker::Image[$fullname],
     name                      => "${docker_login}-${project}_${service}_${branch}",
     volumes                   => $volumes + [
       '/usr/share/nginx/storage:/storage',
