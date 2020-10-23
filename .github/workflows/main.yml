@@ -42,6 +42,20 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         script: sudo /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp; [[ "02" == *"${PIPESTATUS[0]}"* ]]
 
+  
+  notify:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: build
+    steps:
+    - name: send alert message
+      uses: appleboy/telegram-action@master
+#       if: env.WORKFLOW_CONCLUSION == 'failure'
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |
+          Puppet ${{ github.event_name }} event $WORKFLOW_CONCLUSION.
     # Does not require runtime Docker build! Cannot check command exit code
     # - name: Kick puppet
     #   uses: garygrossgarten/github-action-ssh@release
