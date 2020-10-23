@@ -20,12 +20,13 @@ class profile::gopod::base {
   #   ])
   # }
   gobackend::service { 'posts_dev':
-    port    => '9101',
-    service => 'posts',
-    branch  => 'dev',
-    env     => concat($posts_envs, [
+    port      => '9101',
+    service   => 'posts',
+    branch    => 'dev',
+    env       => concat($posts_envs, [
       "INTERVIEW_SERVICE=${hostname}:9301"
-    ])
+    ]),
+    image_tag => $::image_tag,
   }
   # gobackend::service { 'posts_predev':
   #   port    => '9102',
@@ -67,10 +68,11 @@ class profile::gopod::base {
   #   env     => $interview_env,
   # }
   gobackend::service { 'interview_dev':
-    port    => '9301',
-    service => 'interview',
-    branch  => 'dev',
-    env     => $interview_env,
+    port      => '9301',
+    service   => 'interview',
+    branch    => 'dev',
+    env       => $interview_env,
+    image_tag => $::image_tag,
   }
   # ----------------------
 
