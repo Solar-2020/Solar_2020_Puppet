@@ -5,25 +5,27 @@ define gobackend::service(
   Array[String] $env = [],
   String $docker_login='tamerlanchik',
   String $project = 'solar',
-  Array[String] $volumes = []
+  Array[String] $volumes = [],
+  String $image_tag = 'latest',
 ) {
   tag "gobackend::${service}::${branch}"
   $fullname = "${docker_login}/${project}_${service}_${branch}";
 
   docker::image { $fullname:
-    ensure    => 'latest',
-    image_tag => 'latest',
+    ensure    => 'present',
+    image_tag => $image_tag,
     require   => Service['docker']
   }
 
   docker::run { $fullname:
-    image                     => "${fullname}:latest",
+    image                     => "${fullname}:${image_tag}",
     ports                     => ["${port}:8099"],
     env                       => $env + [
       "GIT_BRANCH=${branch}",
       "SERVICE_NAME=${service}"
     ],
     restart_service           => true,
+    pull_on_start             => true,
     remove_container_on_start => false,
     subscribe                 => Docker::Image[$fullname],
     require                   => Docker::Image[$fullname],

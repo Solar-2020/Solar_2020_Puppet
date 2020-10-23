@@ -48,10 +48,11 @@ class profile::gopod::base {
   #   env     => $group_env,
   # }
   gobackend::service { 'group_dev':
-    port    => '9201',
-    service => 'group',
-    branch  => 'dev',
-    env     => $group_env,
+    port      => '9201',
+    service   => 'group',
+    branch    => 'dev',
+    env       => $group_env,
+    image_tag => $::image_tag,
   }
   # ----------------------
 
