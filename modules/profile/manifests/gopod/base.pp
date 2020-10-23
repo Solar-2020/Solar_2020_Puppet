@@ -30,7 +30,7 @@ class profile::gopod::base {
     service   => 'posts',
     branch    => 'dev',
     env       => concat($posts_envs, [
-      'INTERVIEW_SERVICE=http://localhost:9301',
+      'INTERVIEW_SERVICE=http://develop.nl-mail.ru',
     ]),
     image_tag => $image_tag,
   }
