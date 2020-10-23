@@ -4,6 +4,12 @@ class profile::gopod::base {
     version => 'latest',
   }
 
+  if $::image_tag {
+    $image_tag = $::image_tag
+  } else {
+    $image_tag = ''
+  }
+
   # Service posts (main)
   $posts_envs =  [
     'POSTS_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/posts?search_path=posts&sslmode=disable',
@@ -26,7 +32,7 @@ class profile::gopod::base {
     env       => concat($posts_envs, [
       "INTERVIEW_SERVICE=${hostname}:9301"
     ]),
-    image_tag => $::image_tag,
+    image_tag => $image_tag,
   }
   # gobackend::service { 'posts_predev':
   #   port    => '9102',
@@ -53,7 +59,7 @@ class profile::gopod::base {
     service   => 'group',
     branch    => 'dev',
     env       => $group_env,
-    image_tag => $::image_tag,
+    image_tag => $image_tag,
   }
   # ----------------------
 
@@ -72,7 +78,7 @@ class profile::gopod::base {
     service   => 'interview',
     branch    => 'dev',
     env       => $interview_env,
-    image_tag => $::image_tag,
+    image_tag => $image_tag,
   }
   # ----------------------
 
