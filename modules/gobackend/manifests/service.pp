@@ -13,18 +13,16 @@ define gobackend::service(
 
   if $image_tag == '' {
     docker::image { $fullname:
-      ensure    => 'present',
-      image_tag => 'latest',
-      require   => Service['docker']
+      ensure  => 'present',
+      require => Service['docker']
     }
-    $image_tag_mod = ':latest'
+    $image_tag_mod = ''
   } else {
-    docker::image { $fullname:
-      ensure    => 'present',
-      image_tag => $image_tag,
-      require   => Service['docker']
-    }
     $image_tag_mod = ":${image_tag}"
+    docker::image { "${fullname}${image_tag_mod}":
+      ensure  => 'present',
+      require => Service['docker']
+    }
   }
 
   docker::run { $fullname:
@@ -37,8 +35,9 @@ define gobackend::service(
     restart_service           => true,
     # pull_on_start             => true,
     remove_container_on_start => true,
-    subscribe                 => Docker::Image[$fullname],
-    require                   => Docker::Image[$fullname],
+    remove_container_on_stop  => true,
+    subscribe                 => Docker::Image["${fullname}${image_tag_mod}"],
+    require                   => Docker::Image["${fullname}${image_tag_mod}"],
     name                      => "${docker_login}-${project}_${service}_${branch}",
     volumes                   => $volumes + [
       '/usr/share/nginx/storage:/storage',

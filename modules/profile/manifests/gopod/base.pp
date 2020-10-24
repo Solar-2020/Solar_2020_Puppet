@@ -7,7 +7,7 @@ class profile::gopod::base {
   if $::image_tag {
     $image_tag = $::image_tag
   } else {
-    $image_tag = ''
+    $image_tag = 'latest'
   }
 
   # Service posts (main)
@@ -84,7 +84,7 @@ class profile::gopod::base {
 
   # Cron jobs
   cron { 'docker_clear':
-    command => 'sudo /bin/docker container prune -f && sudo /bin/docker image prune -f',
+    command => 'sudo /bin/docker container prune -f && sudo /bin/docker image prune -a -f',
     user    => 'deploy',
     hour    =>absent,
     minute  => '*/30',
