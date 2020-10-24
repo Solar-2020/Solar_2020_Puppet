@@ -13,10 +13,11 @@ define gobackend::service(
 
   if $image_tag == '' {
     docker::image { $fullname:
-      ensure  => 'present',
-      require => Service['docker']
+      ensure    => 'present',
+      image_tag => 'latest',
+      require   => Service['docker']
     }
-    $image_tag_mod = ''
+    $image_tag_mod = ':latest'
   } else {
     docker::image { $fullname:
       ensure    => 'present',
@@ -34,8 +35,8 @@ define gobackend::service(
       "SERVICE_NAME=${service}"
     ],
     restart_service           => true,
-    pull_on_start             => true,
-    remove_container_on_start => false,
+    # pull_on_start             => true,
+    remove_container_on_start => true,
     subscribe                 => Docker::Image[$fullname],
     require                   => Docker::Image[$fullname],
     name                      => "${docker_login}-${project}_${service}_${branch}",
