@@ -29,6 +29,7 @@ define gobackend::service(
       "SERVICE_NAME=${service}"
     ],
     restart_service           => true,
+    extra_parameters          => ['--restart=always'],
     pull_on_start             => true,
     remove_container_on_start => true,
     remove_container_on_stop  => true,
