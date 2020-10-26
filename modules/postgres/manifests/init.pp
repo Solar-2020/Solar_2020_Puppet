@@ -10,7 +10,7 @@ class postgres {
   package { 'postgresql13-server':
     ensure => 'latest'
   }
-  service { 'postgresql13-server':
+  service { 'postgresql-13':
     ensure    => running,
     enable    => true,
     require   => Package['postgresql13-server'],
