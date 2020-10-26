@@ -24,14 +24,22 @@ class postgres {
     mode   => '0644'
   }
 
+  file { '/usr/local/bin/solar_pg.sessions_cleanup.sh':
+    ensure => present,
+    source => 'puppet:///modules/postgres/solar_pg.sessions_cleanup.sh',
+    owner  => 'deploy',
+    group  => 'deploy',
+    mode   => '0774'
+  }
+
   cron { 'postgres_sessions_cleanup':
-    command => "sudo psql ${facts['db_root']}/auth -c 
-      'with del as (DELETE FROM auth.sessions where expiration < NOW() returning *) 
-        select count(cookie) from del;' 
-      > /var/log/solar_pg.sessions_cleanup.log",
+    command => 'sudo /usr/local/bin/solar_pg.sessions_cleanup.sh',
     user    => 'deploy',
     hour    => '*',
     minute  => '*',
-    require => File['/var/log/solar_pg.sessions_cleanup.log']
+    require => [
+      File['/var/log/solar_pg.sessions_cleanup.log'],
+      File['/usr/local/bin/solar_pg.sessions_cleanup.sh'],
+    ]
   }
 }
