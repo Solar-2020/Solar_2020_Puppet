@@ -10,10 +10,12 @@ class profile::gopod::base {
     $image_tag = 'latest'
   }
 
+  $db_root = $facts['db_root']
+
   # Service posts (main)
   $posts_envs =  [
-    'POSTS_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/posts?search_path=posts&sslmode=disable',
-    'UPLOAD_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/upload?search_path=upload&sslmode=disable',
+    "POSTS_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+    "UPLOAD_DB_CONNECTION_STRING=${db_root}/upload?search_path=upload&sslmode=disable",
     'FILE_PATH=/storage/files',
     'PHOTO_PATH=/storage/photos',
   ]
@@ -46,7 +48,7 @@ class profile::gopod::base {
 
   # Service group
   $group_env = [
-      'GROUP_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/groups?search_path=groups&sslmode=disable'
+      "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable"
   ]
   # gobackend::service { 'group_main':
   #   port    => '9200',
@@ -65,7 +67,7 @@ class profile::gopod::base {
 
   # Service interview
   $interview_env = [
-      'INTERVIEW_DB_CONNECTION_STRING=postgres://postgres:postgres@185.255.134.117:5432/posts?search_path=posts&sslmode=disable'
+      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable"
   ]
   # gobackend::service { 'interview_main':
   #   port    => '9300',

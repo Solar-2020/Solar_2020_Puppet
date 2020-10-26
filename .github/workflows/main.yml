@@ -1,25 +1,15 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
       with:
         fetch-depth: 1
@@ -36,11 +26,14 @@ jobs:
     
     - name: Kick Puppet
       uses: appleboy/ssh-action@master
+      env:
+        DB_ROOT: ${{ secrets.DB_CONNECT_ROOT }}
       with:
+        envs: DB_ROOT
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.PRIVATE_KEY }}
-        script: sudo /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp; [[ "02" == *"${PIPESTATUS[0]}"* ]]
+        script: sudo FACTER_db_root=${DB_ROOT} /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp; [[ "02" == *"${PIPESTATUS[0]}"* ]]
 
   
   notify:
@@ -51,42 +44,8 @@ jobs:
     - uses: technote-space/workflow-conclusion-action@v1
     - name: send alert message
       uses: appleboy/telegram-action@master
-#       if: env.WORKFLOW_CONCLUSION == 'failure'
       with:
         to: ${{ secrets.TG_NOTIFY_TO }}
         token: ${{ secrets.TGBOT_TOKEN }}
         message: |
           Puppet ${{ env.WORKFLOW_CONCLUSION }} ${{ github.event_name }} event.
-    # Does not require runtime Docker build! Cannot check command exit code
-    # - name: Kick puppet
-    #   uses: garygrossgarten/github-action-ssh@release
-    #   with:
-    #     command: sudo /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp; [[ "02" == *"${PIPESTATUS[0]}"* ]]
-    #     # command: exit 1
-    #     host: ${{ secrets.REMOTE_HOST }}
-    #     username: ${{ secrets.REMOTE_USER }}
-    #     privateKey: ${{ secrets.SERVER_SSH_KEY }}
-    
-  #   - name: send custom message
-  #     uses: appleboy/telegram-action@master
-  #     if: ${{ failure() }}
-  #     with:
-  #       to: ${{ secrets.TELEGRAM_TO }}
-  #       token: ${{ secrets.TELEGRAM_TOKEN }}
-  #       message: |
-  #         The action for ${{ github.event_name }} event failed.
-  
-  # notify:
-  #   runs-on: ubuntu-latest
-
-  #   if: always()
-  #   needs: build
-  #   steps:
-  #   - name: send alert message
-  #     uses: appleboy/telegram-action@master
-  #     if: env.WORKFLOW_CONCLUSION == 'failure'
-  #     with:
-  #       to: ${{ secrets.TELEGRAM_TO }}
-  #       token: ${{ secrets.TELEGRAM_TOKEN }}
-  #       message: |
-  #         2: The ${{ github.event_name }} event failed.
