@@ -3,4 +3,5 @@ node default {
   include profile::gopod::base
   include profile::myfirewall::rules
   include users
+  include postgres
 }
