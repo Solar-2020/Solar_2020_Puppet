@@ -1,0 +1,1 @@
+psql -Atx "<%= $facts['db_root'] -%>/auth" -c 'with del as (DELETE FROM auth.sessions where expiration < NOW() returning *) select count(cookie) from del;' > /var/log/solar_pg.sessions_cleanup.log
