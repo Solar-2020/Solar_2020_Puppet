@@ -25,22 +25,21 @@ class postgres {
   }
 
   file { '/usr/local/bin/solar_pg.sessions_cleanup.sh':
-    ensure => file,
-    source => epp('postgres/solar_pg.sessions_cleanup.sh.epp'),
-    # source => epp('postgres/fef.epp'),
-    owner  => 'deploy',
-    group  => 'deploy',
-    mode   => '0774'
+    ensure  => file,
+    content => epp('postgres/solar_pg.sessions_cleanup.sh.epp'),
+    owner   => 'deploy',
+    group   => 'deploy',
+    mode    => '0774'
   }
 
-  # cron { 'postgres_sessions_cleanup':
-  #   command => 'sudo /usr/local/bin/solar_pg.sessions_cleanup.sh',
-  #   user    => 'deploy',
-  #   hour    => '*',
-  #   minute  => '*',
-  #   require => [
-  #     File['/var/log/solar_pg.sessions_cleanup.log'],
-  #     File['/usr/local/bin/solar_pg.sessions_cleanup.sh'],
-  #   ]
-  # }
+  cron { 'postgres_sessions_cleanup':
+    command => 'sudo /usr/local/bin/solar_pg.sessions_cleanup.sh',
+    user    => 'deploy',
+    hour    => '*',
+    minute  => '*',
+    require => [
+      File['/var/log/solar_pg.sessions_cleanup.log'],
+      File['/usr/local/bin/solar_pg.sessions_cleanup.sh'],
+    ]
+  }
 }
