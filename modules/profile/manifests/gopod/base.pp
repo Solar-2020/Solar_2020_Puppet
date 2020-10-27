@@ -12,12 +12,27 @@ class profile::gopod::base {
 
   $db_root = $facts['db_root']
 
+  # Service auth
+  $auth_port_dev='9401'
+  gobackend::service { 'auth_dev':
+    port      => $auth_port_dev,
+    service   => 'auth',
+    branch    => 'dev',
+    env       => [
+      "AUTHORIZATION_DB_CONNECTION_STRING=${db_root}/auth?search_path=auth&sslmode=disable"
+    ],
+    image_tag => $image_tag,
+  }
+  $auth_env_dev = "AUTH_SERVICE_ADDRESS=http://develop.nl-mail.ru:${auth_port_dev}"
+  #-----------------------
+
   # Service posts (main)
   $posts_envs =  [
     "POSTS_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
     "UPLOAD_DB_CONNECTION_STRING=${db_root}/upload?search_path=upload&sslmode=disable",
     'FILE_PATH=/storage/files',
     'PHOTO_PATH=/storage/photos',
+    $auth_env_dev,
   ]
   # gobackend::service { 'posts_master':
   #   port    => '9100',
@@ -48,7 +63,8 @@ class profile::gopod::base {
 
   # Service group
   $group_env = [
-      "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable"
+      "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
+      $auth_env_dev,
   ]
   # gobackend::service { 'group_main':
   #   port    => '9200',
@@ -67,7 +83,8 @@ class profile::gopod::base {
 
   # Service interview
   $interview_env = [
-      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable"
+      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+      $auth_env_dev
   ]
   # gobackend::service { 'interview_main':
   #   port    => '9300',
@@ -83,18 +100,6 @@ class profile::gopod::base {
     image_tag => $image_tag,
   }
   # ----------------------
-
-  # Service auth
-    gobackend::service { 'auth_dev':
-    port      => '9401',
-    service   => 'auth',
-    branch    => 'dev',
-    env       => [
-      "AUTHORIZATION_DB_CONNECTION_STRING=${db_root}/auth?search_path=auth&sslmode=disable"
-    ],
-    image_tag => $image_tag,
-  }
-  #-----------------------
 
   # Cron jobs
   cron { 'docker_clear':
