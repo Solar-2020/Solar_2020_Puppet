@@ -84,6 +84,18 @@ class profile::gopod::base {
   }
   # ----------------------
 
+  # Service auth
+    gobackend::service { 'auth_dev':
+    port      => '9401',
+    service   => 'auth',
+    branch    => 'dev',
+    env       => [
+      "AUTHORIZATION_DB_CONNECTION_STRING=${db_root}/auth?search_path=auth&sslmode=disable"
+    ],
+    image_tag => $image_tag,
+  }
+  #-----------------------
+
   # Cron jobs
   cron { 'docker_clear':
     command => 'sudo /bin/docker container prune -f && sudo /bin/docker image prune -a -f',
