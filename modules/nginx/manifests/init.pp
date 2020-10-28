@@ -23,6 +23,9 @@ class nginx {
   -> nginx::conf { 'auth':
     pref => '/conf.d/services'
   }
+  -> nginx::conf { 'account':
+    pref => '/conf.d/services'
+  }
 
   package{ 'nginx':
     ensure => latest,
