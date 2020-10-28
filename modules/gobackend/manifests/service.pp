@@ -42,6 +42,6 @@ define gobackend::service(
     ],
     health_check_cmd          => 'curl http://localhost:8099/health',
     restart_on_unhealthy      => true,
-    health_check_interval     => 5,
+    health_check_interval     => 30,
   }
 }
