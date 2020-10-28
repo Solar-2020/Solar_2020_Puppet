@@ -69,7 +69,7 @@ class profile::gopod::base {
   # Service group
   $group_env = [
       "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
-      $auth_env_dev,
+      # $auth_env_dev,
   ]
   # gobackend::service { 'group_main':
   #   port    => '9200',
@@ -81,7 +81,10 @@ class profile::gopod::base {
     port      => '9201',
     service   => 'group',
     branch    => 'dev',
-    env       => concat($commod_env_dev, $group_env),
+    env       => concat($commod_env_dev, [
+      "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
+      # $auth_env_dev,
+    ]),
     image_tag => $image_tag,
   }
   # ----------------------
