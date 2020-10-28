@@ -103,7 +103,6 @@ class profile::gopod::base {
   # Service interview
   $interview_env = [
       "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
-      # $auth_env_dev
   ]
   # gobackend::service { 'interview_main':
   #   port    => '9300',
@@ -115,7 +114,9 @@ class profile::gopod::base {
     port      => '9301',
     service   => 'interview',
     branch    => 'dev',
-    env       => concat($commod_env_dev, $interview_env),
+    env       => concat($commod_env_dev, [
+      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+  ]),
     image_tag => $image_tag,
   }
   # ----------------------
