@@ -20,6 +20,9 @@ class nginx {
   -> nginx::conf { 'interview':
     pref => '/conf.d/services'
   }
+  -> nginx::conf { 'auth':
+    pref => '/conf.d/services'
+  }
 
   package{ 'nginx':
     ensure => latest,
