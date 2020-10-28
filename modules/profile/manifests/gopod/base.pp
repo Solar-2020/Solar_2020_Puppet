@@ -12,18 +12,25 @@ class profile::gopod::base {
 
   $db_root = $facts['db_root']
 
+  $commod_env_dev = [
+    'AUTH_SERVICE_ADDRESS=http://develop.nl-mail.ru',
+    'INTERVIEW_SERVICE=http://develop.nl-mail.ru',
+    'GROUP_SERVICE_ADDRESS=http://develop.nl-mail.ru',
+    'ACCOUNT_SERVICE_ADDRESS=http://develop.nl-mail.ru'
+  ]
+
   # Service auth
   $auth_port_dev='9401'
   gobackend::service { 'auth_dev':
     port      => $auth_port_dev,
     service   => 'auth',
     branch    => 'dev',
-    env       => [
+    env       => concat($commod_env_dev, [
       "AUTHORIZATION_DB_CONNECTION_STRING=${db_root}/auth?search_path=auth&sslmode=disable"
-    ],
+    ]),
     image_tag => $image_tag,
   }
-  $auth_env_dev = "AUTH_SERVICE_ADDRESS=http://develop.nl-mail.ru:${auth_port_dev}"
+  # $auth_env_dev = "AUTH_SERVICE_ADDRESS=http://develop.nl-mail.ru:${auth_port_dev}"
   #-----------------------
 
   # Service posts (main)
@@ -46,9 +53,7 @@ class profile::gopod::base {
     port      => '9101',
     service   => 'posts',
     branch    => 'dev',
-    env       => concat($posts_envs, [
-      'INTERVIEW_SERVICE=http://develop.nl-mail.ru',
-    ]),
+    env       => $commod_env_dev,
     image_tag => $image_tag,
   }
   # gobackend::service { 'posts_predev':
@@ -76,7 +81,7 @@ class profile::gopod::base {
     port      => '9201',
     service   => 'group',
     branch    => 'dev',
-    env       => $group_env,
+    env       => concat($commod_env_dev, $group_env),
     image_tag => $image_tag,
   }
   # ----------------------
@@ -84,7 +89,7 @@ class profile::gopod::base {
   # Service interview
   $interview_env = [
       "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
-      $auth_env_dev
+      # $auth_env_dev
   ]
   # gobackend::service { 'interview_main':
   #   port    => '9300',
@@ -96,7 +101,7 @@ class profile::gopod::base {
     port      => '9301',
     service   => 'interview',
     branch    => 'dev',
-    env       => $interview_env,
+    env       => concat($commod_env_dev, $interview_env),
     image_tag => $image_tag,
   }
   # ----------------------
