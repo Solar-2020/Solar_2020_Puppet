@@ -39,7 +39,6 @@ class profile::gopod::base {
     "UPLOAD_DB_CONNECTION_STRING=${db_root}/upload?search_path=upload&sslmode=disable",
     'FILE_PATH=/storage/files',
     'PHOTO_PATH=/storage/photos',
-    $auth_env_dev,
   ]
   # gobackend::service { 'posts_master':
   #   port    => '9100',
