@@ -12,6 +12,29 @@ class profile::gopod::base {
 
   $db_root = $facts['db_root']
 
+  $go_dev_env = {
+    sub      => 'dev',
+    upstream => 'go_dev',
+    port     => '9000',
+    sub_ports   => {
+      post      => '9101',
+      auth      => '9401',
+      group     => '9201',
+      account   => '9501',
+      interview => '9301'
+    }
+  }
+  $go_env_list = [
+    $go_dev_env
+  ]
+
+  class { 'nginx':
+    go_backend_envs => $go_env_list,
+    go_default_env  => 'dev',
+    hostname        => 'nl-mail.ru',
+    hostname_re     => 'nl-mail\.ru'
+  }
+
   $commod_env_dev = [
     'AUTH_SERVICE_ADDRESS=http://develop.nl-mail.ru',
     'INTERVIEW_SERVICE=http://develop.nl-mail.ru',
@@ -20,9 +43,8 @@ class profile::gopod::base {
   ]
 
   # Service auth
-  $auth_port_dev='9401'
   gobackend::service { 'auth_dev':
-    port      => $auth_port_dev,
+    port      => $go_dev_env['sub_ports']['auth'],
     service   => 'auth',
     branch    => 'dev',
     env       => concat($commod_env_dev, [
@@ -49,7 +71,7 @@ class profile::gopod::base {
   #   ])
   # }
   gobackend::service { 'posts_dev':
-    port      => '9101',
+    port      => $go_dev_env['sub_ports']['post'],
     service   => 'posts',
     branch    => 'dev',
     env       => $commod_env_dev,
@@ -77,7 +99,7 @@ class profile::gopod::base {
   #   env     => $group_env,
   # }
   gobackend::service { 'group_dev':
-    port      => '9201',
+    port      => $go_dev_env['sub_ports']['group'],
     service   => 'group',
     branch    => 'dev',
     env       => concat($commod_env_dev, [
@@ -89,7 +111,7 @@ class profile::gopod::base {
   # ----------------------
 
   gobackend::service { 'account_dev':
-    port      => '9501',
+    port      => $go_dev_env['sub_ports']['account'],
     service   => 'account',
     branch    => 'dev',
     env       => concat($commod_env_dev, [
@@ -110,7 +132,7 @@ class profile::gopod::base {
   #   env     => $interview_env,
   # }
   gobackend::service { 'interview_dev':
-    port      => '9301',
+    port      => $go_dev_env['sub_ports']['interview'],
     service   => 'interview',
     branch    => 'dev',
     env       => concat($commod_env_dev, [

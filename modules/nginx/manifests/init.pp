@@ -1,31 +1,68 @@
-class nginx {
-  nginx::conf { 'nginx': }
-  nginx::conf { 'branch':
-    pref => '/conf.d'
-  }
+class nginx (
+  $go_backend_envs,
+  $go_default_env,
+  $hostname,
+  $hostname_re
+){
+  # nginx::conf { 'nginx': }
+  # nginx::conf { 'branch':
+  #   pref => '/conf.d'
+  # }
   nginx::conf { 'cors': }
 
-  file {'/etc/nginx/conf.d/services':
-      ensure => directory,
-      mode   => '0770',
-      owner  => 'nginx',
-      group  => 'www'
+  ->file { 'nginx.conf':
+    ensure  => file,
+    path    => '/etc/nginx/nginx.conf',
+    content => template('nginx/nginx.conf.erb'),
+    mode    => '0644',
+    owner   => 'nginx',
+    group   => 'www',
+    notify  => Service['nginx']
   }
-  -> nginx::conf { 'api':
-    pref => '/conf.d/services'
+
+  file { 'conf.d/branch.conf':
+    ensure  => file,
+    path    => '/etc/nginx/conf.d/branch.conf',
+    content => template('nginx/conf.d/branch.conf.erb'),
+    mode    => '0644',
+    owner   => 'nginx',
+    group   => 'www',
+    notify  => Service['nginx']
   }
-  -> nginx::conf { 'group':
-    pref => '/conf.d/services'
+
+  $go_backend_envs.each |$env| {
+    file { "/etc/nginx/conf.d/api_${$env['sub']}.conf":
+      ensure  => file,
+      content => template('nginx/conf.d/api.conf.erb'),
+      mode    => '0644',
+      owner   => 'nginx',
+      group   => 'www',
+      notify  => Service['nginx']
+    }
   }
-  -> nginx::conf { 'interview':
-    pref => '/conf.d/services'
-  }
-  -> nginx::conf { 'auth':
-    pref => '/conf.d/services'
-  }
-  -> nginx::conf { 'account':
-    pref => '/conf.d/services'
-  }
+
+
+  # file {'/etc/nginx/conf.d/services':
+  #     ensure => directory,
+  #     mode   => '0770',
+  #     owner  => 'nginx',
+  #     group  => 'www'
+  # }
+  # -> nginx::conf { 'api':
+  #   pref => '/conf.d/services'
+  # }
+  # -> nginx::conf { 'group':
+  #   pref => '/conf.d/services'
+  # }
+  # -> nginx::conf { 'interview':
+  #   pref => '/conf.d/services'
+  # }
+  # -> nginx::conf { 'auth':
+  #   pref => '/conf.d/services'
+  # }
+  # -> nginx::conf { 'account':
+  #   pref => '/conf.d/services'
+  # }
 
   package{ 'nginx':
     ensure => latest,

@@ -1,0 +1,32 @@
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+
+    keepalive_timeout  65;
+
+    map $branch $go_upstream {
+        <% @go_backend_envs.each do |env| -%>
+          <%= env['sub'] %>      <%= env['upstream'] %>
+        <% end -%>
+        default     <%= @go_default_env -%>;
+    }
+
+    # основные сервера (branch)
+    include /usr/local/etc/nginx/conf.d/*.conf;
+
+    # сервер по умолчанию для неподошедших запросов.
+    # Вернет ошибку
+    server {
+        listen 80 default_server;   # сервер по умолчанию для данного порта. Без default_server стандартным считается первый по порядку
+        server_name "";
+        return 404;
+    }
+}
