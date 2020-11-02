@@ -66,7 +66,7 @@ class nginx (
   # }
 
   package{ 'nginx':
-    ensure => latest,
+    ensure => '1.19.4',
   }
 
   service { 'nginx':
