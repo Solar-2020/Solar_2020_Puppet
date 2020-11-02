@@ -14,13 +14,13 @@ http {
 
     map $branch $go_upstream {
         <% @go_backend_envs.each do |env| -%>
-          '<%= env['sub'] %>'      '<%= env['upstream'] %>';
+          '<%= env['sub'] %>'      <%= env['upstream'] %>;
         <% end -%>
         default     '<%= @go_default_upstream -%>';
     }
 
     # основные сервера (branch)
-    include /usr/local/etc/nginx/conf.d/*.conf;
+    include /etc/nginx/conf.d/*.conf;
 
     # сервер по умолчанию для неподошедших запросов.
     # Вернет ошибку
