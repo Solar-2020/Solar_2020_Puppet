@@ -14,9 +14,9 @@ http {
 
     map $branch $go_upstream {
         <% @go_backend_envs.each do |env| -%>
-          <%= env['sub'] %>      <%= env['upstream'] %>
+          <%= env['sub'] %>      <%= env['upstream'] %>;
         <% end -%>
-        default     <%= @go_default_env -%>;
+        default     <%= @go_default_upstream -%>;
     }
 
     # основные сервера (branch)

@@ -1,6 +1,6 @@
 class nginx (
   $go_backend_envs,
-  $go_default_env,
+  $go_default_upstream,
   $hostname,
   $hostname_re
 ){
@@ -9,6 +9,7 @@ class nginx (
   #   pref => '/conf.d'
   # }
   nginx::conf { 'cors': }
+  nginx::conf { 'proxy_pass_backend': }
 
   ->file { 'nginx.conf':
     ensure  => file,

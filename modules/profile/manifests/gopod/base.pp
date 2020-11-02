@@ -29,10 +29,10 @@ class profile::gopod::base {
   ]
 
   class { 'nginx':
-    go_backend_envs => $go_env_list,
-    go_default_env  => 'dev',
-    hostname        => 'nl-mail.ru',
-    hostname_re     => 'nl-mail\.ru'
+    go_backend_envs     => $go_env_list,
+    go_default_upstream => 'go_dev',
+    hostname            => 'nl-mail.ru',
+    hostname_re         => 'nl-mail\.ru'
   }
 
   $commod_env_dev = [
