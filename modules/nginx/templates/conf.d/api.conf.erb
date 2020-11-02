@@ -3,7 +3,7 @@ server {
     server_name default;
 
     location ~/(post|upload) {
-        set $backend_port <%= @env['sub_ports']['post'] -%>;
+        set $backend_port '<%= @env['sub_ports']['post'] -%>';
         include /usr/local/etc/nginx/proxy_pass_backend.conf;
     }
 
@@ -11,22 +11,22 @@ server {
     # но с \/ православнее
 
     location ~ (\/internal)?\/group {
-        set $backend_port <%= @env['sub_ports']['group'] -%>;
+        set $backend_port '<%= @env['sub_ports']['group'] -%>';
         include /usr/local/etc/nginx/proxy_pass_backend.conf;
     }
 
     location ~ (\/internal)?\/interview {
-        set $backend_port <%= @env['sub_ports']['interview'] -%>;
+        set $backend_port '<%= @env['sub_ports']['interview'] -%>';
         include /usr/local/etc/nginx/proxy_pass_backend.conf;
     }
 
     location ~ (\/internal)?\/auth {
-        set $backend_port '<%= @env['sub_ports']['auth'] -%>;
+        set $backend_port '<%= @env['sub_ports']['auth'] -%>';
         include /usr/local/etc/nginx/proxy_pass_backend.conf;
     }
 
     location ~ (\/internal)?\/account {
-        set $backend_port <%= @env['sub_ports']['account'] -%>;
+        set $backend_port '<%= @env['sub_ports']['account'] -%>';
         include /usr/local/etc/nginx/proxy_pass_backend.conf;
     }
 
