@@ -1,5 +1,5 @@
 class profile::gopod::base {
-  $hostname = 'http://nl-mail.ru'
+  $hostname = 'nl-mail.ru'
   class { 'docker':
     version => 'latest',
   }
@@ -12,6 +12,9 @@ class profile::gopod::base {
 
   $db_root = $facts['db_root']
 
+  # Описываем зоны, для которых генерим конфиг (прод, дев и тд)
+
+  # dev
   $go_dev_env = {
     sub      => 'dev',
     upstream => 'go_dev',
@@ -52,7 +55,6 @@ class profile::gopod::base {
     ]),
     image_tag => $image_tag,
   }
-  # $auth_env_dev = "AUTH_SERVICE_ADDRESS=http://develop.nl-mail.ru:${auth_port_dev}"
   #-----------------------
 
   # Service posts (main)
@@ -62,14 +64,7 @@ class profile::gopod::base {
     'FILE_PATH=/storage/files',
     'PHOTO_PATH=/storage/photos',
   ]
-  # gobackend::service { 'posts_master':
-  #   port    => '9100',
-  #   service => 'posts',
-  #   branch  => 'master',
-  #   env     => concat($posts_envs, [
-  #     "INTERVIEW_SERVICE=${hostname}:9300"
-  #   ])
-  # }
+
   gobackend::service { 'posts_dev':
     port      => $go_dev_env['sub_ports']['post'],
     service   => 'posts',
@@ -77,34 +72,17 @@ class profile::gopod::base {
     env       => $commod_env_dev,
     image_tag => $image_tag,
   }
-  # gobackend::service { 'posts_predev':
-  #   port    => '9102',
-  #   service => 'posts',
-  #   branch  => 'predev',
-  #   env     => concat($posts_envs, [
-  #     "INTERVIEW_SERVICE=${hostname}:9301"
-  #   ])
-  # }
-  # ----------------------
 
   # Service group
   $group_env = [
       "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
-      # $auth_env_dev,
   ]
-  # gobackend::service { 'group_main':
-  #   port    => '9200',
-  #   service => 'group',
-  #   branch  => 'main',
-  #   env     => $group_env,
-  # }
   gobackend::service { 'group_dev':
     port      => $go_dev_env['sub_ports']['group'],
     service   => 'group',
     branch    => 'dev',
     env       => concat($commod_env_dev, [
       "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
-      # $auth_env_dev,
     ]),
     image_tag => $image_tag,
   }
@@ -116,7 +94,6 @@ class profile::gopod::base {
     branch    => 'dev',
     env       => concat($commod_env_dev, [
       "ACCOUNT_DB_CONNECTION_STRING=${db_root}/users?search_path=users&sslmode=disable",
-      # $auth_env_dev,
     ]),
     image_tag => $image_tag,
   }
@@ -125,12 +102,6 @@ class profile::gopod::base {
   $interview_env = [
       "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
   ]
-  # gobackend::service { 'interview_main':
-  #   port    => '9300',
-  #   service => 'interview',
-  #   branch  => 'main',
-  #   env     => $interview_env,
-  # }
   gobackend::service { 'interview_dev':
     port      => $go_dev_env['sub_ports']['interview'],
     service   => 'interview',

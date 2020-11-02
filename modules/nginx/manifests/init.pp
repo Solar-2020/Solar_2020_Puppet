@@ -4,10 +4,6 @@ class nginx (
   $hostname,
   $hostname_re
 ){
-  # nginx::conf { 'nginx': }
-  # nginx::conf { 'branch':
-  #   pref => '/conf.d'
-  # }
   nginx::conf { 'cors': }
   nginx::conf { 'proxy_pass_backend': }
 
@@ -41,29 +37,6 @@ class nginx (
       notify  => Service['nginx']
     }
   }
-
-
-  # file {'/etc/nginx/conf.d/services':
-  #     ensure => directory,
-  #     mode   => '0770',
-  #     owner  => 'nginx',
-  #     group  => 'www'
-  # }
-  # -> nginx::conf { 'api':
-  #   pref => '/conf.d/services'
-  # }
-  # -> nginx::conf { 'group':
-  #   pref => '/conf.d/services'
-  # }
-  # -> nginx::conf { 'interview':
-  #   pref => '/conf.d/services'
-  # }
-  # -> nginx::conf { 'auth':
-  #   pref => '/conf.d/services'
-  # }
-  # -> nginx::conf { 'account':
-  #   pref => '/conf.d/services'
-  # }
 
   package{ 'nginx':
     ensure => '1.19.4',
