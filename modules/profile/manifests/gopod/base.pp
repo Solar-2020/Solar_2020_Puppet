@@ -16,7 +16,7 @@ class profile::gopod::base {
 
   # dev
   $go_dev_env = {
-    sub      => 'dev',
+    sub      => 'develop',
     upstream => 'go_dev',
     port     => '9000',
     sub_ports   => {

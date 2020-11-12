@@ -9,15 +9,14 @@ upstream citadel {
 }
 
 <% @hostnames.each do |hostname| -%>
-
 server {
     listen 81;
     # nl-mail.ru or first-level subdomains
     server_name ~^(?<branch>\w*)\.?<%= hostname['re'] %>$;
 
-    if ($branch = '') {
-        set $branch 'main';
-    }
+ #   if ($branch = '') {
+ #       set $branch 'main';
+ #   }
 
 #    if ($branch = '') {
 #        rewrite ^(.*)$ main.$1 break;
