@@ -158,7 +158,7 @@ class profile::gopod::base {
   gobackend::service { 'posts':
     port      => $go_master_env['sub_ports']['post'],
     service   => 'posts',
-    branch    => 'main',
+    branch    => 'master',
     env       => $commod_env_prod,
     image_tag => $image_tag,
   }

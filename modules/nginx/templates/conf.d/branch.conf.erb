@@ -6,7 +6,7 @@ upstream <%= env['upstream'] %> {
 
 server {
     listen 80;
-    server_name  ~^(?<name>.+)\.example\.com$;
+    server_name  ~^(?<branch>\w*\.)<%= @hostname_re %>$;
     return 301 https://$host$request_uri;
 }
 
