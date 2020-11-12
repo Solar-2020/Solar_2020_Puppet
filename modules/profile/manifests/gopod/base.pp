@@ -99,7 +99,6 @@ class profile::gopod::base {
   # Service group
   $group_env = [
       "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
-      "INVITE_GROUP_PREFIX_ADDRESS=https://${hostname}/welcome",
   ]
   gobackend::service { 'group_dev':
     port      => $go_dev_env['sub_ports']['group'],
@@ -107,8 +106,7 @@ class profile::gopod::base {
     branch    => 'dev',
     env       => concat($commod_env_dev, [
       "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
-      "INVITE_GROUP_PREFIX_ADDRESS=https://${hostname}/welcome",
-  ]),
+    ]),
     image_tag => $image_tag,
   }
   # ----------------------
@@ -185,8 +183,7 @@ class profile::gopod::base {
     branch    => 'main',
     env       => concat($commod_env_prod, [
       "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
-      "INVITE_GROUP_PREFIX_ADDRESS=https://${hostname}/welcome",
-  ]),
+    ]),
     image_tag => $image_tag,
   }
   # ----------------------
