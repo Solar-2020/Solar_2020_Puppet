@@ -68,7 +68,7 @@ server {
     listen 80;
     server_name  ~^(?<branch>\w*\.)<%= hostname['re'] %>$;
 
-    location /api/internal {
+    location /api {
         proxy_cookie_domain citadel $host;
         proxy_set_header   Host             $host;
         proxy_set_header   X-Real-IP        $remote_addr;
