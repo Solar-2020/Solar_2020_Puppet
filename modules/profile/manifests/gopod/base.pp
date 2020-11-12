@@ -1,5 +1,5 @@
 class profile::gopod::base {
-  $hostname = 'nl-mail.ru'
+  $hostname = 'pay-together.ru'
   class { 'docker':
     version => 'latest',
   }
@@ -46,16 +46,16 @@ class profile::gopod::base {
 
   class { 'nginx':
     go_backend_envs     => $go_env_list,
-    go_default_upstream => 'go_dev',
-    hostname            => 'nl-mail.ru',
-    hostname_re         => 'nl-mail\.ru'
+    go_default_upstream => 'go_main',
+    hostname            => 'pay-together.ru',
+    hostname_re         => 'pay-together\.ru'
   }
 
   $commod_env_dev = [
-    'AUTH_SERVICE_ADDRESS=http://develop.nl-mail.ru',
-    'INTERVIEW_SERVICE=http://develop.nl-mail.ru',
-    'GROUP_SERVICE_ADDRESS=http://develop.nl-mail.ru',
-    'ACCOUNT_SERVICE_ADDRESS=http://develop.nl-mail.ru'
+    'AUTH_SERVICE_ADDRESS=http://develop.pay-together.ru',
+    'INTERVIEW_SERVICE=http://develop.pay-together.ru',
+    'GROUP_SERVICE_ADDRESS=http://develop.pay-together.ru',
+    'ACCOUNT_SERVICE_ADDRESS=http://develop.pay-together.ru'
   ]
 
   # Service auth
@@ -129,10 +129,10 @@ class profile::gopod::base {
   # PROD
 
   $commod_env_prod = [
-    'AUTH_SERVICE_ADDRESS=https://nl-mail.ru',
-    'INTERVIEW_SERVICE=https://nl-mail.ru',
-    'GROUP_SERVICE_ADDRESS=https://nl-mail.ru',
-    'ACCOUNT_SERVICE_ADDRESS=https://nl-mail.ru'
+    'AUTH_SERVICE_ADDRESS=https://pay-together.ru',
+    'INTERVIEW_SERVICE=https://pay-together.ru',
+    'GROUP_SERVICE_ADDRESS=https://pay-together.ru',
+    'ACCOUNT_SERVICE_ADDRESS=https://pay-together.ru'
   ]
 
   # Service auth
