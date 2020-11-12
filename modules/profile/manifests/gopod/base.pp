@@ -48,7 +48,17 @@ class profile::gopod::base {
     go_backend_envs     => $go_env_list,
     go_default_upstream => 'go_main',
     hostname            => 'pay-together.ru',
-    hostname_re         => 'pay-together\.ru'
+    hostname_re         => 'pay-together\.ru',
+    hostnames           => [
+      {
+        name => 'pay-together.ru',
+        re   => 'pay-together\.ru'
+      },
+      {
+        name => 'nl-mail.ru',
+        re   => 'nl-mail\.ru'
+      },
+    ]
   }
 
   $commod_env_dev = [

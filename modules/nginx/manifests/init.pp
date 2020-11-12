@@ -2,7 +2,8 @@ class nginx (
   $go_backend_envs,
   $go_default_upstream,
   $hostname,
-  $hostname_re
+  $hostname_re,
+  $hostnames
 ){
   nginx::conf { 'cors': }
   nginx::conf { 'proxy_pass_backend': }
