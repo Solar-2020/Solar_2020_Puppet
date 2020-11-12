@@ -27,8 +27,21 @@ class profile::gopod::base {
       interview => '9301'
     }
   }
+  $go_master_env = {
+    sub      => 'main',
+    upstream => 'go_main',
+    port     => '8000',
+    sub_ports   => {
+      post      => '8101',
+      auth      => '8401',
+      group     => '8201',
+      account   => '8501',
+      interview => '8301'
+    }
+  }
   $go_env_list = [
-    $go_dev_env
+    $go_dev_env,
+    $go_master_env
   ]
 
   class { 'nginx':
@@ -112,6 +125,82 @@ class profile::gopod::base {
     image_tag => $image_tag,
   }
   # ----------------------
+
+  # PROD
+
+  $commod_env_prod = [
+    'AUTH_SERVICE_ADDRESS=https://nl-mail.ru',
+    'INTERVIEW_SERVICE=https://nl-mail.ru',
+    'GROUP_SERVICE_ADDRESS=https://nl-mail.ru',
+    'ACCOUNT_SERVICE_ADDRESS=https://nl-mail.ru'
+  ]
+
+  # Service auth
+  gobackend::service { 'auth':
+    port      => $go_master_env['sub_ports']['auth'],
+    service   => 'auth',
+    branch    => 'main',
+    env       => concat($commod_env_prod, [
+      "AUTHORIZATION_DB_CONNECTION_STRING=${db_root}/auth?search_path=auth&sslmode=disable"
+    ]),
+    image_tag => $image_tag,
+  }
+  #-----------------------
+
+  # Service posts (main)
+  # $posts_envs =  [
+  #   "POSTS_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+  #   "UPLOAD_DB_CONNECTION_STRING=${db_root}/upload?search_path=upload&sslmode=disable",
+  #   'FILE_PATH=/storage/files',
+  #   'PHOTO_PATH=/storage/photos',
+  # ]
+
+  gobackend::service { 'posts':
+    port      => $go_master_env['sub_ports']['post'],
+    service   => 'posts',
+    branch    => 'main',
+    env       => $commod_env_prod,
+    image_tag => $image_tag,
+  }
+
+  # Service group
+  # $group_env = [
+  #     "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
+  # ]
+  gobackend::service { 'group':
+    port      => $go_master_env['sub_ports']['group'],
+    service   => 'group',
+    branch    => 'main',
+    env       => concat($commod_env_prod, [
+      "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
+    ]),
+    image_tag => $image_tag,
+  }
+  # ----------------------
+
+  gobackend::service { 'account':
+    port      => $go_master_env['sub_ports']['account'],
+    service   => 'account',
+    branch    => 'main',
+    env       => concat($commod_env_prod, [
+      "ACCOUNT_DB_CONNECTION_STRING=${db_root}/users?search_path=users&sslmode=disable",
+    ]),
+    image_tag => $image_tag,
+  }
+
+  # Service interview
+  # $interview_env = [
+  #     "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+  # ]
+  gobackend::service { 'interview':
+    port      => $go_master_env['sub_ports']['interview'],
+    service   => 'interview',
+    branch    => 'main',
+    env       => concat($commod_env_prod, [
+      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+  ]),
+    image_tag => $image_tag,
+  }
 
   # Cron jobs
   cron { 'docker_clear':
