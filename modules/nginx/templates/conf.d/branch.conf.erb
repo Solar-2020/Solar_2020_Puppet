@@ -28,6 +28,16 @@ server {
         try_files $uri $uri/ =404;
     }
 
+    location /grafana/ {
+		proxy_pass http://localhost:3000/;
+		proxy_redirect off;
+	}		
+
+	location /prometheus/ {
+		proxy_pass http://localhost:9090/;
+		proxy_redirect off;
+	}
+
     location / {
         # include /etc/nginx/cors.conf;
         root /usr/share/nginx/html/$branch_norm;
