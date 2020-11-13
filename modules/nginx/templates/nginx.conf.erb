@@ -12,7 +12,12 @@ http {
 
     keepalive_timeout  65;
 
-    map $branch $go_upstream {
+    map $branch $branch_norm {
+        default $branch;
+        ''      'main';
+    }
+
+    map $branch_norm $go_upstream {
         <% @go_backend_envs.each do |env| -%>
           '<%= env['sub'] %>'      <%= env['upstream'] %>;
         <% end -%>
