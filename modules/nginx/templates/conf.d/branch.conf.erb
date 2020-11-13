@@ -46,6 +46,7 @@ server {
 
 server {
     listen 443 ssl http2;
+    server_name ~^\w*\.?<%= hostname['re'] %>$;
     # для nic.ru: cat www_nl-mail.ru... intermediate root >> bundle; 
     # Затем разделить концы-начала ключей на разные строки.
     ssl_certificate /etc/ssl/<%= hostname['name'] %>.bundle.crt;
