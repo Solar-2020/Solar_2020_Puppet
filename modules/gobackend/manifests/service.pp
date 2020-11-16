@@ -30,7 +30,7 @@ define gobackend::service(
     ],
     restart_service           => true,
     extra_parameters          => ['--restart=always'],
-    pull_on_start             => true,
+    # pull_on_start             => true,
     remove_container_on_start => true,
     remove_container_on_stop  => true,
     subscribe                 => Docker::Image["${fullname}${image_tag_mod}"],
