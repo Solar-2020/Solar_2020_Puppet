@@ -11,6 +11,8 @@ http {
     sendfile        on;
 
     keepalive_timeout  65;
+    client_max_body_size 4m;
+    client_body_buffer_size 32k;
 
     map $branch $branch_norm {
         default $branch;
