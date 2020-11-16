@@ -11,6 +11,8 @@ class profile::gopod::base {
   }
 
   $db_root = $facts['db_root']
+  $payment_client_id = $facts['client_id']
+  # $payment_server_secret = $facts['server_secret']
 
   # Описываем зоны, для которых генерим конфиг (прод, дев и тд)
 
@@ -141,8 +143,10 @@ class profile::gopod::base {
     service   => 'payments',
     branch    => 'dev',
     env       => concat($commod_env_dev, [
-      "POSTS_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
-      "UPLOAD_DB_CONNECTION_STRING=${db_root}/upload?search_path=upload&sslmode=disable",
+      "MONEY_CLIENT_ID=${payment_client_id}",
+      "DOMAIN_NAME=${hostname}",
+      # "SERVER_SECRET=${payment_server_secret",
+      "PAYMENT_DB_CONNECTION_STRING=${db_root}/payment?search_path=payment&sslmode=disable",
   ]),
     image_tag => $image_tag,
   }
