@@ -126,14 +126,14 @@ class profile::gopod::base {
 
   # Service interview
   $interview_env = [
-      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/interviews?search_path=interviews&sslmode=disable",
   ]
   gobackend::service { 'interview_dev':
     port      => $go_dev_env['sub_ports']['interview'],
     service   => 'interview',
     branch    => 'dev',
     env       => concat($commod_env_dev, [
-      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/interviews?search_path=interviews&sslmode=disable",
   ]),
     image_tag => $image_tag,
   }
@@ -213,15 +213,12 @@ class profile::gopod::base {
   }
 
   # Service interview
-  # $interview_env = [
-  #     "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
-  # ]
   gobackend::service { 'interview':
     port      => $go_master_env['sub_ports']['interview'],
     service   => 'interview',
     branch    => 'main',
     env       => concat($commod_env_prod, [
-      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+      "INTERVIEW_DB_CONNECTION_STRING=${db_root}/interviews?search_path=interviews&sslmode=disable",
   ]),
     image_tag => $image_tag,
   }
