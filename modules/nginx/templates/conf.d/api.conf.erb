@@ -30,6 +30,11 @@ server {
         include /etc/nginx/proxy_pass_backend.conf;
     }
 
+    location ~ (\/internal)?\/payment {
+        set $backend_port <%= @env['sub_ports']['payments'] -%>;
+        include /etc/nginx/proxy_pass_backend.conf;
+    }
+
     location / {
         return 404;
     }

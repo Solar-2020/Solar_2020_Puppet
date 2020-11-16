@@ -24,7 +24,8 @@ class profile::gopod::base {
       auth      => '9401',
       group     => '9201',
       account   => '9501',
-      interview => '9301'
+      interview => '9301',
+      payments  => '9601'
     }
   }
   $go_master_env = {
@@ -36,7 +37,8 @@ class profile::gopod::base {
       auth      => '8401',
       group     => '8201',
       account   => '8501',
-      interview => '8301'
+      interview => '8301',
+      payments  => '8601'
     }
   }
   $go_env_list = [
@@ -130,6 +132,17 @@ class profile::gopod::base {
     branch    => 'dev',
     env       => concat($commod_env_dev, [
       "INTERVIEW_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+  ]),
+    image_tag => $image_tag,
+  }
+
+  gobackend::service { 'payments_dev':
+    port      => $go_dev_env['sub_ports']['payments'],
+    service   => 'payments',
+    branch    => 'dev',
+    env       => concat($commod_env_dev, [
+      "POSTS_DB_CONNECTION_STRING=${db_root}/posts?search_path=posts&sslmode=disable",
+      "UPLOAD_DB_CONNECTION_STRING=${db_root}/upload?search_path=upload&sslmode=disable",
   ]),
     image_tag => $image_tag,
   }
