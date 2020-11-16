@@ -30,11 +30,11 @@ jobs:
         DB_ROOT: ${{ secrets.DB_CONNECT_ROOT }}
         CLIENT_ID: ${{ secrets.MONEY_CLIENT_ID }}
       with:
-        envs: DB_ROOT
+        envs: DB_ROOT, CLIENT_ID
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.PRIVATE_KEY }}
-        script: sudo echo ${CLIENT_ID}  > test.log && 
+        script: sudo 
           FACTER_db_root=${DB_ROOT} FACTER_client_id=${CLIENT_ID} 
           /opt/puppetlabs/bin/puppet apply /etc/puppetlabs/code/environments/production/manifests/site.pp; [[ "02" == *"${PIPESTATUS[0]}"* ]]
 
