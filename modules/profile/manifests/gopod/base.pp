@@ -223,6 +223,19 @@ class profile::gopod::base {
     image_tag => $image_tag,
   }
 
+  gobackend::service { 'payments':
+    port      => $go_dev_env['sub_ports']['payments'],
+    service   => 'payments',
+    branch    => 'main',
+    env       => concat($commod_env_dev, [
+      "MONEY_CLIENT_ID=${payment_client_id}",
+      "DOMAIN_NAME=${hostname}",
+      # "SERVER_SECRET=${payment_server_secret",
+      "PAYMENT_DB_CONNECTION_STRING=${db_root}/payment?search_path=payment&sslmode=disable",
+  ]),
+    image_tag => $image_tag,
+  }
+
   # Cron jobs
   cron { 'docker_clear':
     command => 'sudo /bin/docker container prune -f && sudo /bin/docker image prune -a -f',
