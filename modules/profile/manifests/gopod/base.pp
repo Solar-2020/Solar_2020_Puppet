@@ -224,10 +224,10 @@ class profile::gopod::base {
   }
 
   gobackend::service { 'payments':
-    port      => $go_dev_env['sub_ports']['payments'],
+    port      => $go_master_env['sub_ports']['payments'],
     service   => 'payments',
     branch    => 'main',
-    env       => concat($commod_env_dev, [
+    env       => concat($commod_env_prod, [
       "MONEY_CLIENT_ID=${payment_client_id}",
       "DOMAIN_NAME=${hostname}",
       # "SERVER_SECRET=${payment_server_secret",
