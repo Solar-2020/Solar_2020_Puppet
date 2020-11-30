@@ -12,6 +12,7 @@ class profile::gopod::base {
 
   $db_root = $facts['db_root']
   $payment_client_id = $facts['client_id']
+  $invite_mail_password = $facts['invite_mail_pwd']
   # $payment_server_secret = $facts['server_secret']
 
   # Описываем зоны, для которых генерим конфиг (прод, дев и тд)
@@ -103,7 +104,8 @@ class profile::gopod::base {
   # Service group
   $group_dev_env = [
       "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
-      "INVITE_GROUP_PREFIX_ADDRESS=https://develop.${hostname}/welcome"
+      "INVITE_GROUP_PREFIX_ADDRESS=https://develop.${hostname}/welcome",
+      "INVITE_LETTERS_PASSWORD=${invite_mail_password}"
   ]
   gobackend::service { 'group_dev':
     port      => $go_dev_env['sub_ports']['group'],
@@ -195,7 +197,8 @@ class profile::gopod::base {
   # ]
   $group_env = [
       "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
-      "INVITE_GROUP_PREFIX_ADDRESS=https://${hostname}/welcome"
+      "INVITE_GROUP_PREFIX_ADDRESS=https://${hostname}/welcome",
+      "INVITE_LETTERS_PASSWORD=${invite_mail_password}"
   ]
   gobackend::service { 'group':
     port      => $go_master_env['sub_ports']['group'],
