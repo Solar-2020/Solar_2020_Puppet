@@ -13,6 +13,7 @@ class profile::gopod::base {
   $db_root = $facts['db_root']
   $payment_client_id = $facts['client_id']
   $invite_mail_password = $facts['invite_mail_pwd']
+  $jwt_payment_secret = $facts['jwt_payment_secret']
   # $payment_server_secret = $facts['server_secret']
 
   # Описываем зоны, для которых генерим конфиг (прод, дев и тд)
@@ -149,6 +150,7 @@ class profile::gopod::base {
       "DOMAIN_NAME=${hostname}",
       # "SERVER_SECRET=${payment_server_secret",
       "PAYMENT_DB_CONNECTION_STRING=${db_root}/payment?search_path=payment&sslmode=disable",
+      "JWT_PAYMENT_TOKEN_SECRET=${jwt_payment_secret}",
   ]),
     image_tag => $image_tag,
   }
@@ -239,6 +241,7 @@ class profile::gopod::base {
       "DOMAIN_NAME=${hostname}",
       # "SERVER_SECRET=${payment_server_secret",
       "PAYMENT_DB_CONNECTION_STRING=${db_root}/payment?search_path=payment&sslmode=disable",
+      "JWT_PAYMENT_TOKEN_SECRET=${jwt_payment_secret}",
   ]),
     image_tag => $image_tag,
   }
