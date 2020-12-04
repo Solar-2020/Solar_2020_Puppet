@@ -147,7 +147,7 @@ class profile::gopod::base {
     branch    => 'dev',
     env       => concat($commod_env_dev, [
       "MONEY_CLIENT_ID=${payment_client_id}",
-      "DOMAIN_NAME=${hostname}",
+      "DOMAIN_NAME=develop.${hostname}",
       # "SERVER_SECRET=${payment_server_secret",
       "PAYMENT_DB_CONNECTION_STRING=${db_root}/payment?search_path=payment&sslmode=disable",
       "JWT_PAYMENT_TOKEN_SECRET=${jwt_payment_secret}",
