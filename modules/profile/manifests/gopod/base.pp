@@ -174,7 +174,11 @@ class profile::gopod::base {
     'AUTH_SERVICE_ADDRESS=https://pay-together.ru',
     'INTERVIEW_SERVICE=https://pay-together.ru',
     'GROUP_SERVICE_ADDRESS=https://pay-together.ru',
-    'ACCOUNT_SERVICE_ADDRESS=https://pay-together.ru'
+    'ACCOUNT_SERVICE_ADDRESS=https://pay-together.ru',
+
+    "AUTH_SERVICE_HOST=${hostname}",
+    "GROUP_SERVICE_HOST=${hostname}",
+    "ACCOUNT_SERVICE_HOST=${hostname}",
   ]
 
   # Service auth
@@ -248,7 +252,7 @@ class profile::gopod::base {
     port      => $go_master_env['sub_ports']['payments'],
     service   => 'payments',
     branch    => 'main',
-    env       => concat($commod_env_dev, $payment_env, [
+    env       => concat($commod_env_prod, $payment_env, [
       "DOMAIN_NAME=${hostname}",
       # "SERVER_SECRET=${payment_server_secret",
       "MONEY_FAIL_URL=https://${hostname}/pay/error",
