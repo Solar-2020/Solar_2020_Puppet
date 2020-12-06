@@ -152,6 +152,7 @@ class profile::gopod::base {
     "PAYMENT_DB_CONNECTION_STRING=${db_root}/payment?search_path=payment&sslmode=disable",
     "MONEY_CLIENT_ID=${payment_client_id}",
     "JWT_PAYMENT_TOKEN_SECRET=${jwt_payment_secret}",
+    'PAYMENT_REDIRECT_COOKIE_LIFETIEME=172800'
   ]
 
   gobackend::service { 'payments_dev':
