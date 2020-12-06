@@ -67,11 +67,18 @@ class profile::gopod::base {
     ]
   }
 
+  $dev_host = "develop.${hostname}"
+  $dev_url  = "https://${dev_host}"
+
   $commod_env_dev = [
     'AUTH_SERVICE_ADDRESS=http://develop.pay-together.ru',
     'INTERVIEW_SERVICE=http://develop.pay-together.ru',
     'GROUP_SERVICE_ADDRESS=http://develop.pay-together.ru',
-    'ACCOUNT_SERVICE_ADDRESS=http://develop.pay-together.ru'
+    'ACCOUNT_SERVICE_ADDRESS=http://develop.pay-together.ru',
+
+    "AUTH_SERVICE_HOST=${dev_host}",
+    "GROUP_SERVICE_HOST=${dev_host}",
+    "ACCOUNT_SERVICE_HOST=${dev_host}",
   ]
 
   # Service auth
@@ -105,7 +112,7 @@ class profile::gopod::base {
   # Service group
   $group_dev_env = [
       "GROUP_DB_CONNECTION_STRING=${db_root}/groups?search_path=groups&sslmode=disable",
-      "INVITE_GROUP_PREFIX_ADDRESS=https://develop.${hostname}/welcome",
+      "INVITE_GROUP_PREFIX_ADDRESS=${dev_url}/welcome",
       "INVITE_LETTERS_PASSWORD=${invite_mail_password}"
   ]
   gobackend::service { 'group_dev':
@@ -141,17 +148,22 @@ class profile::gopod::base {
     image_tag => $image_tag,
   }
 
+  $payment_env = [
+    "PAYMENT_DB_CONNECTION_STRING=${db_root}/payment?search_path=payment&sslmode=disable",
+    "MONEY_CLIENT_ID=${payment_client_id}",
+    "JWT_PAYMENT_TOKEN_SECRET=${jwt_payment_secret}",
+  ]
+
   gobackend::service { 'payments_dev':
     port      => $go_dev_env['sub_ports']['payments'],
     service   => 'payments',
     branch    => 'dev',
-    env       => concat($commod_env_dev, [
-      "MONEY_CLIENT_ID=${payment_client_id}",
-      "DOMAIN_NAME=develop.${hostname}",
+    env       => concat($commod_env_dev, $payment_env, [
+      "DOMAIN_NAME=${dev_host}",
       # "SERVER_SECRET=${payment_server_secret",
-      "PAYMENT_DB_CONNECTION_STRING=${db_root}/payment?search_path=payment&sslmode=disable",
-      "JWT_PAYMENT_TOKEN_SECRET=${jwt_payment_secret}",
-  ]),
+      "MONEY_FAIL_URL=${dev_url}/pay/error",
+      "SUCCESS_PAYMENT_REDIRECT=${dev_url}/group/%d",
+    ]),
     image_tag => $image_tag,
   }
   # ----------------------
@@ -236,13 +248,12 @@ class profile::gopod::base {
     port      => $go_master_env['sub_ports']['payments'],
     service   => 'payments',
     branch    => 'main',
-    env       => concat($commod_env_prod, [
-      "MONEY_CLIENT_ID=${payment_client_id}",
+    env       => concat($commod_env_dev, $payment_env, [
       "DOMAIN_NAME=${hostname}",
       # "SERVER_SECRET=${payment_server_secret",
-      "PAYMENT_DB_CONNECTION_STRING=${db_root}/payment?search_path=payment&sslmode=disable",
-      "JWT_PAYMENT_TOKEN_SECRET=${jwt_payment_secret}",
-  ]),
+      "MONEY_FAIL_URL=https://${hostname}/pay/error",
+      "SUCCESS_PAYMENT_REDIRECT=https://${hostname}/group/%d",
+    ]),
     image_tag => $image_tag,
   }
 
